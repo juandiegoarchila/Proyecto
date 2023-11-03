@@ -1,9 +1,22 @@
-<h1>Registro</h1>
-<form action="/users/signup" method="post">
-  <input type="text" name="name" placeholder="Nombre" required>
-  <input type="email" name="email" placeholder="Correo Electrónico" required>
-  <input type="password" name="password" placeholder="Contraseña" required>
-  <input type="password" name="confirm_password" placeholder="Confirmar Contraseña" required>
-  <button type="submit">Registrarse</button>
-</form>
-<a href="/users/signin">Iniciar Sesión</a>
+<link rel="stylesheet" href="/User.css">
+
+<div class="container">
+  <form action="/users/signup" method="post">
+    <div class="form-group">
+      <h1>Registro</h1>
+      <input type="text" name="name" placeholder="Nombre" required>
+    </div>
+    <div class="form-group">
+      <input type="email" name="email" placeholder="Correo Electrónico" required>
+    </div>
+    <div class="form-group">
+      <input type="password" name="password" placeholder="Contraseña" required>
+    </div>
+    <div class="form-group">
+      <input type="password" name="confirm_password" placeholder="Confirmar Contraseña" required>
+    </div>
+    <button type="submit">Registrarse</button>
+    <a href="/users/signin" class="btn">Iniciar Sesión</a>
+
+  </form>
+</div>
