@@ -15,11 +15,10 @@ router.get('/signin', userCtrol.rendersigninForm);
 router.post('/signin', userCtrol.signin);
 
 router.get('/logout', userCtrol.logout);
-// Ruta para mostrar el formulario de restablecimiento de contraseña
+
 router.get('/forgot-password', userCtrol.renderForgotPasswordForm);
 
 // Ruta para manejar la solicitud de restablecimiento de contraseña
 router.post('/forgot-password', userCtrol.forgotPassword);
-
 
 module.exports = router;

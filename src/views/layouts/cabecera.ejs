@@ -44,9 +44,9 @@
                 </a>
             </li>
             <li style="--bg:#e20e0e;">
-                <a href="/users/logout">
+                <a href="#">
                     <div class="icon"><ion-icon name="calendar-outline"></ion-icon></div>
-                    <div class="text">Cerrar Sesión</div>
+                    <div class="text"> Calendario</div>
                 </a>
             </li>
             <li style="--bg:#0011ff;">
@@ -69,8 +69,17 @@
                     </label>
                 </div>
                 <!-- userimg -->
-                <div class="user">
-                    <img src="/imagenes/foto.perfil.jpg" alt="">
+                
+                <div class="dropdown">
+                    <button class="dropbtn">
+                        <img src="/imagenes/foto.perfil.jpg" alt="" id="profileImage" class="user">
+                    </button>
+                    <div class="dropdown-content" id="dropdownContent">
+                        <a href="/users/logout">Cerrar Sesión</a>
+                        <a href="/users/profile">Perfil</a>
+
+
+                    </div>
                 </div>
-            </div>
-           
+                </div>
+                
