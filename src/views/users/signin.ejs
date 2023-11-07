@@ -1,9 +1,13 @@
 <%- include('../layouts/Users-Cabecera.ejs') %>
 
-<%- include('../partials/errors.ejs') %>
 
-<br><br><br><br><br>
+<br><br><br>
+<div class="col-md-4 mx-auto">
+  <%- include('../partials/errors.ejs') %>
+
+</div>
 <div class="container">
+
   <form action="/users/signin" method="post">
     <h1>Iniciar Sesión</h1>
     <div class="form-group">
@@ -12,7 +16,6 @@
     <div class="form-group">
       <input type="password" name="password" id="password" placeholder="Contraseña" required>
       <i id="togglePasswordIcon" class="fas fa-eye" class="show-password-btn" onclick="togglePasswordVisibility('password', 'togglePasswordIcon')"></i>
-      <i id="togglePasswordIconClosed" class="fas fa-eye-slash" class="show-password-btn" onclick="togglePasswordVisibility('password', 'togglePasswordIconClosed')"></i>
     </div>
     <button type="submit">Iniciar Sesión</button>
     <a href="/users/signup" class="btn">Registrarse</a>

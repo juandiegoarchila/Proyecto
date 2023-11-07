@@ -1,8 +1,12 @@
 <%- include('../layouts/Users-Cabecera.ejs') %>
 
-<%- include('../partials/errors.ejs') %>
 
-<br><br>
+<br>
+<div class="col-md-4 mx-auto">
+  <%- include('../partials/errors.ejs') %>
+
+</div>
+
 <div class="container">
   <form action="/users/signup" method="post">
     <div class="form-group">
@@ -24,6 +28,7 @@
     </div>
     <div class="form-group form-check">
       <input type="checkbox" class="form-check-input" id="acceptTerms" required>
+    
       <label class="form-check-label" for="acceptTerms">Acepto términos y condiciones de la plataforma</label>
     </div>
     <button type="submit">Registrarse</button>

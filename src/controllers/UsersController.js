@@ -62,7 +62,6 @@ userCtrol.signin = async (req, res, next) => {
     const user = userCredential.user;
 
     if (!user.emailVerified) {
-      // El usuario no ha verificado su correo electrónico
       req.flash('error_msg', 'Debes verificar tu correo electrónico antes de iniciar sesión.');
       return res.redirect('/users/signin');
     }
