@@ -74,3 +74,17 @@ a.btn:hover {
   text-align: center;
   margin-top: 20px; 
 }
+
+/* ojo */
+.fa-eye,
+.fa-eye-slash {
+  position: absolute;
+  right: 10px;
+  top: 50%; 
+  transform: translateY(-50%); 
+  cursor: pointer;
+}
+
+.form-group {
+  position: relative;
+}

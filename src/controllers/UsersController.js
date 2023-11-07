@@ -114,5 +114,3 @@ userCtrol.forgotPassword = async (req, res) => {
   }
 };
 module.exports = userCtrol;
-
-
