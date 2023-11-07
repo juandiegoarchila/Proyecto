@@ -68,3 +68,9 @@ a.btn {
 a.btn:hover {
   background-color: #0056b3;
 }
+
+.centered-link {
+  display: block;
+  text-align: center;
+  margin-top: 20px; 
+}
