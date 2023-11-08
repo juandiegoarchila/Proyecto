@@ -21,4 +21,13 @@ router.get('/forgot-password', userCtrol.renderForgotPasswordForm);
 // Ruta para manejar la solicitud de restablecimiento de contraseña
 router.post('/forgot-password', userCtrol.forgotPassword);
 
+
+// Ruta para ver el perfil del usuario
+router.get('/profile', userCtrol.renderProfile);
+
+// Ruta para actualizar el perfil del usuario (nueva ruta)
+router.post('/profile', userCtrol.updateProfile);
+
+
+
 module.exports = router;

@@ -1,9 +1,7 @@
-const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, sendEmailVerification  } = require('firebase/auth');
-const { getFirestore, collection, addDoc } = require('firebase/firestore');
+const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, sendEmailVerification, updateProfile } = require('firebase/auth');
+const { getFirestore, collection, where, getDocs, query, addDoc, updateDoc } = require('firebase/firestore');
 const app = require('../config/Conexion');
-
 const userCtrol = {};
-
 userCtrol.rendersignupForm = (req, res) => {
   res.render('users/signup');
 };
@@ -112,4 +110,78 @@ userCtrol.forgotPassword = async (req, res) => {
     res.redirect('/users/forgot-password');
   }
 };
+// Controlador para renderizar el perfil del usuario
+userCtrol.renderProfile = async (req, res) => {
+  const auth = getAuth(app);
+  const user = auth.currentUser;
+
+  if (user) {
+    const firestore = getFirestore(app);
+    const userRef = collection(firestore, 'users');
+    const userQuery = query(userRef, where('uid', '==', user.uid));
+
+    try {
+      const querySnapshot = await getDocs(userQuery);
+
+      if (!querySnapshot.empty) {
+        const userData = querySnapshot.docs[0].data();
+        // Pasa los datos del usuario a la vista
+        res.render('users/profile', { name: userData.name, email: userData.email, uid: user.uid });
+      } else {
+        req.flash('error_msg', 'No se encontró información del usuario.');
+        res.redirect('/users/signin');
+      }
+    } catch (error) {
+      console.error('Error al consultar Firestore:', error);
+      req.flash('error_msg', 'Error al consultar Firestore');
+      res.redirect('/users/signin');
+    }
+  } else {
+    req.flash('error_msg', 'Debes iniciar sesión para ver tu perfil.');
+    res.redirect('/users/signin');
+  }
+};
+userCtrol.updateProfile = async (req, res) => {
+  const auth = getAuth(app);
+  const user = auth.currentUser;
+
+  if (user) {
+    const { name, email } = req.body;
+    const firestore = getFirestore(app);
+    const userRef = collection(firestore, 'users');
+    const userQuery = query(userRef, where('uid', '==', user.uid));
+
+    try {
+      const querySnapshot = await getDocs(userQuery);
+
+      if (!querySnapshot.empty) {
+        const userDocRef = querySnapshot.docs[0].ref;
+
+        // Actualiza la información del usuario en Firestore
+        await updateDoc(userDocRef, {
+          name: name,
+          email: email // Asegúrate de que el email puede ser actualizado en tu configuración de Firebase
+        });
+
+        // Opcional: Actualiza el perfil de Firebase Auth, si es necesario
+        // await updateProfile(user, { displayName: name, email: email });
+
+        req.flash('success_msg', 'Perfil actualizado exitosamente');
+        res.redirect('/users/profile');
+      } else {
+        req.flash('error_msg', 'No se encontró información del usuario para actualizar.');
+        res.redirect('/users/profile');
+      }
+    } catch (error) {
+      console.error('Error al actualizar el perfil:', error);
+      req.flash('error_msg', 'Error al actualizar el perfil');
+      res.redirect('/users/profile');
+    }
+  } else {
+    req.flash('error_msg', 'Debes iniciar sesión para actualizar tu perfil.');
+    res.redirect('/users/signin');
+  }
+};
+
+
 module.exports = userCtrol;
