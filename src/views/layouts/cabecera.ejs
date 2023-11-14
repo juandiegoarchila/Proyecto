@@ -72,14 +72,15 @@
                 
                 <div class="dropdown">
                     <button class="dropbtn">
-                        <img src="/imagenes/foto.perfil.jpg" alt="" id="profileImage" class="user">
+                      <img src="/imagenes/foto.perfil.jpg" alt="" id="profileImage" class="user">
+                      <% if (typeof name !== 'undefined') { %>
+                        <span><%= name %></span>
+                      <% } %>
                     </button>
                     <div class="dropdown-content" id="dropdownContent">
-                        <a href="/users/logout">Cerrar Sesión</a>
-                        <a href="/users/profile">Perfil</a>
-
-
+                      <a href="/users/logout">Cerrar Sesión</a>
+                      <a href="/users/profile">Perfil</a>
                     </div>
-                </div>
+                  </div>
                 </div>
                 
