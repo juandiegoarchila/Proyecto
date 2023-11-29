@@ -29,6 +29,8 @@ const firebaseApp = require('./config/Conexion');
 
 const crudRouter = require('./routes/crud.routes');
 const usersRouter = require('./routes/users.routes');
+const CrudUsersRouter = require('./routes/Crud-Users.routes');
+
 
 
 app.use(logger('dev'));
@@ -38,6 +40,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride('_method'));
 
+
 // Establece la carpeta de vistas y el motor de vistas EJS
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -45,10 +48,12 @@ app.set('view engine', 'ejs');
 
 app.use('/crud', crudRouter); 
 app.use('/users', usersRouter); 
+app.use('/Crud/Users', CrudUsersRouter);
 
 
 
-const port = process.env.PORT || 3000;
+
+const port = process.env.PORT || 4000;
 
 app.listen(port, () => {
   console.log(`Server on port ${port}`);
