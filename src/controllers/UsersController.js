@@ -233,5 +233,85 @@ userCtrol.updateProfile = async (req, res) => {
     return res.redirect('/users/signin');
   }
 };
+userCtrol.updateProfile = async (req, res) => {
+  const auth = getAuth(app);
+  const user = auth.currentUser;
 
+  if (user) {
+    const { name, email } = req.body;
+
+    const firestore = getFirestore(app);
+    const userRef = collection(firestore, 'users');
+    const userQuery = query(userRef, where('uid', '==', user.uid));
+
+    try {
+      const querySnapshot = await getDocs(userQuery);
+
+      if (!querySnapshot.empty) {
+        const userDocRef = querySnapshot.docs[0].ref;
+        const userData = querySnapshot.docs[0].data();
+        let profileImageUrl = userData.profileImageUrl;
+
+        if (req.files && req.files.profileImage) {
+          const storage = getStorage(app);
+
+          if (profileImageUrl) {
+            const previousImageRef = ref(storage, profileImageUrl);
+            try {
+              await deleteObject(previousImageRef);
+              debug('Previous profile image deleted successfully!');
+            } catch (error) {
+              console.error('Error deleting previous profile image:', error);
+              req.flash('error_msg', 'Hubo un error al eliminar la imagen anterior.');
+              return res.redirect('/users/profile');
+            }
+          }
+
+          const profileImageRef = ref(storage, `Avatar/${Date.now()}_${req.files.profileImage[0].originalname}`);
+
+          try {
+            await uploadBytes(profileImageRef, req.files.profileImage[0].buffer, {
+              contentType: req.files.profileImage[0].mimetype
+            });
+
+            profileImageUrl = await getDownloadURL(profileImageRef);
+            await updateDoc(userDocRef, { profileImageUrl });
+
+            debug('Profile image uploaded successfully!');
+          } catch (error) {
+            console.error('Error uploading profile image:', error);
+            req.flash('error_msg', 'Hubo un error al subir la nueva imagen. Por favor, inténtalo de nuevo más tarde.');
+            return res.redirect('/users/profile');
+          }
+        }
+
+        await updateDoc(userDocRef, {
+          name: name,
+          email: email
+        });
+
+        await updateProfile(user, { displayName: name, email: email });
+
+        if (!profileImageUrl) {
+          profileImageUrl = '/imagenes/default-avatar.jpg';
+          await updateDoc(userDocRef, { profileImageUrl });
+        }
+
+        req.flash('success_msg', 'Perfil actualizado exitosamente');
+        // Cambio: En lugar de renderizar, redirige directamente con el mensaje
+        return res.redirect('/users/profile');
+      } else {
+        req.flash('error_msg', 'No se encontró información del usuario para actualizar.');
+        return res.redirect('/users/profile');
+      }
+    } catch (error) {
+      console.error('Error al actualizar el perfil:', error);
+      req.flash('error_msg', 'Hubo un error al actualizar el perfil. Por favor, inténtalo de nuevo más tarde.');
+      return res.redirect('/users/profile');
+    }
+  } else {
+    req.flash('error_msg', 'Debes iniciar sesión para actualizar tu perfil.');
+    return res.redirect('/users/signin');
+  }
+};
 module.exports = userCtrol;
